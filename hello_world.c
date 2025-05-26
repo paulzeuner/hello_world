@@ -35,3 +35,61 @@ static void greet_user(void);
  * Includes extensive input validation
  */
 static void draw_dynamic_shape(void);
+
+// --- Function Implementations ---
+
+static void clear_input_buffer(void) {
+  int c;
+  while ((c = getchar()) != '\n' && c != EOF);
+}
+
+static void simple_greet(void) {
+  puts("Hello from a modular helper function!");
+}
+
+static void print_basic_greetings(void) {
+  printf("\n--- Section: Basic Greetings ---\n");
+
+  // Using printf for simple output
+  printf("Hello, World!\n");
+
+  // Using puts for simple string output (automatically adds newline)
+  puts("Hello, C Programmers!");
+
+  // printf with multiple lines and tabs (escape sequences)
+  printf("Hello,\n\tWorld!\n");
+
+  // Combining printf and puts
+  printf("This is output from printf. ");
+  puts("And this is from puts.");
+
+  // Calling a helper function;
+  simple_greet();
+}
+
+static void greet_user(void) {
+  printf("\n--- Section: Interactive Greeting ---\n");
+  char name[NAME_BUFFER_SIZE];
+
+  printf("Enter your name (up to %d characters): ", NAME_BUFFER_SIZE - 1);
+
+  // Use fgets for safe string input. It reads up to N-1 chars or until newline/EOF
+  // It includes the newline character if there's space
+  if (fgets(name, sizeof(name), stdin) == NULL) {
+    perror("Error reading name");
+    return; // Exit function on input error
+  }
+
+  // Remove the trailing newline character that fgets might have included
+  // strcspn finds the first occurrence of a character from the second argument
+  // If '\n' is found, replace it with '\0' (null terminator)
+
+  name[strcspn(name, "\n")] = '\0';
+
+  // Check if the input was empty (only newline or EOF was entered)
+  if (name[0] == '\0') {
+    printf("No name entered. Proceeding with a generic greeting.\n");
+  } else {
+    printf("Hello, %s!\n", name);
+  }
+}
