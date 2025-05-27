@@ -117,5 +117,68 @@ static void draw_static_shapes(void) {
     }
     putchar('\n'); // NewLine after each row
   }
+
 }
 
+static void draw_dynamic_shape(void) {
+  printf("\n--- Section: Dynamic ASCII Art ---\n");
+  int width, height;
+  char symbol, solid_hollow_choice;
+  int input_scan_count; // To check scanf return value
+
+  // Get Width
+  printf("Enter width for the shape (1-%d): ", MAX_DIMENSION);
+  input_scan_count = scanf("%d", &width);
+  if (input_scan_count != 1 || width <= 0 || width > MAX_DIMENSION) {
+    printf("Invalid width. Skipping dynamic shape.\n");
+    clear_input_buffer(); // Clear any remaining invalid input
+    return;
+  }
+  clear_input_buffer(); // Clear the newline left by scanf
+
+  // Get Height
+  printf("Enter height for the shape (1-%d): ", MAX_DIMENSION);
+  input_scan_count = scanf("%d", &height);
+  if (input_scan_count != 1 || height <= 0 || height > MAX_DIMENSION) {
+    printf("Invalid height. Skipping dynamic shape.\n");
+    clear_input_buffer();
+    return;
+  }
+  clear_input_buffer(); // clear the newline left by scanf
+
+  // Get Symbol
+  printf("Enter a character for the shape (e.g., * # $): ");
+  input_scan_count = scanf(" %c", &symbol); // Space before %c to consume any leftover whitespace
+  if (input_scan_count != 1) {
+    printf("Invalid character input. Skipping Dynamic shape.\n");
+    clear_input_buffer();
+    return;
+  }
+  clear_input_buffer(); // Clear the newline left by scanf
+
+  // Get Solid/Hollow choice
+  printf("Draw solid or hollow shape? (s/h): ");
+  input_scan_count = scanf(" %c", &solid_hollow_choice);
+  if(input_scan_count != 1 || (solid_hollow_choice != 's' && solid_hollow_choice != 'h')) {
+    printf("Invalid choice for solid/hollow. Drawing solid shape by default.\n");
+    solid_hollow_choice = 's'; // Default to solid
+  }
+  clear_input_buffer(); // Clear the newline left by scanf
+
+  printf("Drawing a %dx%d shape using '%c' (%s):\n",
+  width, height, symbol, (solid_hollow_choice == 's' ? "Solid" : "Hollow"));
+
+  for (int i = 0; i < height; i++) { // Rows
+    for (int j = 0; j < width; j++) { // Columns
+      if (solid_hollow_choice == 's' || // Solid shape
+        i == 0 || i == height - 1 || // First or last row (for hollow)
+        j == 0 || j == width - 1) { // First or last column (for hollow)
+          putchar(symbol);
+        } else {
+          putchar(' '); // Inside of hollow shape
+        }
+    }
+    putchar('\n'); // Newline after each row
+  }
+  
+}
