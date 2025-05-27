@@ -93,3 +93,29 @@ static void greet_user(void) {
     printf("Hello, %s!\n", name);
   }
 }
+
+static void draw_static_shapes(void) {
+  printf("\n--- Section: Static ASCII Art ---\n");
+
+  // Static Box
+  puts("Static Box:");
+  puts("*****");
+  puts("*   *");
+  puts("*****");
+  printf("\n");
+
+  // Static Pyramid (Height 5)
+  puts("Static Pyramid (Height 5):");
+  for (int i = 1; i <= 5; i++) {
+    // Print leading spaces
+    for (int j = 0; j < 5 - i; j++) {
+      putchar(' ');
+    }
+    // Print Asterisks
+    for (int k = 0; k < 2 * i -1; k++) {
+      putchar('*');
+    }
+    putchar('\n'); // NewLine after each row
+  }
+}
+
