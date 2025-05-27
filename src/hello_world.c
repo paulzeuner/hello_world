@@ -70,6 +70,7 @@ static void print_basic_greetings(void) {
 static void greet_user(void) {
   printf("\n--- Section: Interactive Greeting ---\n");
   char name[NAME_BUFFER_SIZE];
+  size_t len; // variable to store string length
 
   printf("Enter your name (up to %d characters): ", NAME_BUFFER_SIZE - 1);
 
@@ -80,15 +81,25 @@ static void greet_user(void) {
     return; // Exit function on input error
   }
 
-  // Remove the trailing newline character that fgets might have included
-  // strcspn finds the first occurrence of a character from the second argument
-  // If '\n' is found, replace it with '\0' (null terminator)
+  // Determine the actual length of the string read by fgets
+  len = strlen(name);
 
-  name[strcspn(name, "\n")] = '\0';
+  // Check if fgets read a newline character
+  // If len > 0 and the last character is '\n', it means the whole line (including newline) fit
+  if (len > 0 && name[len - 1] == '\n') {
+    name[len - 1] = '\0'; // Remove the trailing newline
+  } else {
+    // If no newline was found, it means the input line was longer than NAME_BUFFER_SIZE - 1
+    // The remaining characters (including the actual newline) are still in stdin
+    // We must clear the input buffer to prevent them from affecting subsequent scanf calls
+    clear_input_buffer();
+  }
 
-  // Check if the input was empty (only newline or EOF was entered)
+
+  // Check if the input was empty (only newline or EOF was entered, now the string is empty)
   if (name[0] == '\0') {
     printf("No name entered. Proceeding with a generic greeting.\n");
+    printf("Hello, mysterious user!\n");
   } else {
     printf("Hello, %s!\n", name);
   }
