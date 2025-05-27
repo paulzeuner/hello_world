@@ -182,3 +182,16 @@ static void draw_dynamic_shape(void) {
   }
   
 }
+
+int main(void) {
+  printf("--- Hello World Variations Application ---\n");
+
+  print_basic_greetings();
+  greet_user();
+  draw_static_shapes();
+  draw_dynamic_shape(); // This function will prompt for input
+
+  printf("\n--- End of Application ---\n");
+
+  return 0; // Indicate successful execution
+}
